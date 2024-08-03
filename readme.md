@@ -36,7 +36,7 @@ The **YouTube Subscriber Verifier** is a Discord bot designed to verify if users
     ```js
     module.exports = {
         token: "YOUR_BOT_TOKEN_HERE", // Add your bot's token here
-        channel_name: "@BeastBoyShub", // Specify your YouTube channel's name here
+        channel_name: "@devuuuu_xd", // Specify your YouTube channel's name here
         role_id: "YOUR_ROLE_ID_HERE", // ID of the role to be given
         keywords: "SUBSCRIBED", // Specify the keywords for analyzing the image
         save_data: "false" // Set to "true" to save data in subscriber.json, "false" otherwise
@@ -72,16 +72,8 @@ The **YouTube Subscriber Verifier** is a Discord bot designed to verify if users
 - **Permission Issues**: Verify that the bot has appropriate permissions in your Discord server.
 - **Image Issues**: Make sure the image format is supported and accessible.
 
-## Contributing 🤝
-
-Contributions are welcome! Please open an issue or submit a pull request on the [GitHub repository](https://github.com/yourusername/YouTube-Subscriber-Verifier). 
-
-## License 📜
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Contact 📧
 
-For any questions or support, please open an issue on the [GitHub repository](https://github.com/yourusername/YouTube-Subscriber-Verifier) or contact me directly.
+For any questions or support, please open an issue on the [GitHub repository](https://github.com/devuuuxd/YouTube-Subscriber-Verifier) or contact me directly.
 
 Happy verifying! 🎉
