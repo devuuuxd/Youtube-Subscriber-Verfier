@@ -174,4 +174,5 @@ client.login(config.token).catch(err => {
 /*/* ALL CREDITS TO 
 /* https://www.youtube.com/@devuuu_xd (YOUTUBE)
 /* https://github.com/devuuuxd (GITHUB)
+/* MAKE SURE TO GIVE ME CREDITS 😼😼
 /*/
