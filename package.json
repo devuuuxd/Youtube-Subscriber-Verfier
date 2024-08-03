@@ -1,0 +1,33 @@
+{
+  "name": "youtube-subscriber-verfier",
+  "version": "6.9.9",
+  "description": "A simple Discord bot which verifies your subscriber and gives you role",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devuuuxd/Youtube-Subscriber-Verfier"
+  },
+  "keywords": [
+    "discord.js",
+    "discord",
+    "discordbot",
+    "discord",
+    "bot",
+    "youtube",
+    "verfier",
+    "youtube",
+    "discord",
+    "youtube",
+    "verifier"
+  ],
+  "author": "devu obv?",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "sharp": "^0.33.4",
+    "tesseract.js": "^5.1.0"
+  }
+}
