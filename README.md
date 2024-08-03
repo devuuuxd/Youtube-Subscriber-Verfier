@@ -24,7 +24,7 @@ The **YouTube Subscriber Verifier** is a Discord bot designed to verify if users
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/YouTube-Subscriber-Verifier.git
+   git clone https://github.com/devuuuxd/YouTube-Subscriber-Verifier.git
    cd YouTube-Subscriber-Verifier
    ```
 2. **Install dependencies:**
