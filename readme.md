@@ -72,6 +72,10 @@ The **YouTube Subscriber Verifier** is a Discord bot designed to verify if users
 - **Permission Issues**: Verify that the bot has appropriate permissions in your Discord server.
 - **Image Issues**: Make sure the image format is supported and accessible.
 
+## Changelog 📜
+
+- Check the changelog and other releases [here](https://github.com/devuuuxd/Youtube-Subscriber-Verfier/releases). 🚀
+
 ## Contact 📧
 
 For any questions or support, please open an issue on the [GitHub repository](https://github.com/devuuuxd/YouTube-Subscriber-Verifier) or contact me directly on our Team's [Discord Server](https://discord.gg/V9jAnPKTg6) [Kronix Development](https://www.teamkronix.tech).
