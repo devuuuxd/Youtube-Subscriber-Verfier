@@ -5,6 +5,21 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const config = require("./config.js");
 
+// Getting Config
+if (!config.token) {
+    console.error('Error: Bot token is required in config.js');
+    process.exit(1);
+}
+if (!config.channel_name) {
+    console.error('Error: Channel name is required in config.js');
+    process.exit(1);
+}
+
+const role_id = config.role_id || null;
+const keywords = config.keywords || null;
+const save_data = config.save_data || 'false';
+
+
 
 // Creating a Client
 const client = new Client({
@@ -12,15 +27,13 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers 
+        GatewayIntentBits.GuildMembers
     ]
 });
 
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
-
-    // Register slash commands
     const commands = [
         new SlashCommandBuilder()
             .setName('verify')
@@ -48,13 +61,15 @@ client.once(Events.ClientReady, async readyClient => {
 });
 
 
-// check if a user is already verified
+
+// Check if a user is already verified
 const isUserVerified = (userId) => {
     if (!fs.existsSync('subscriber.json')) return false;
 
     const subscribers = JSON.parse(fs.readFileSync('subscriber.json'));
     return subscribers.some(subscriber => subscriber.id === userId);
 };
+
 
 
 // Command handling
@@ -66,21 +81,21 @@ client.on(Events.InteractionCreate, async interaction => {
     if (commandName === 'verify') {
         const member = interaction.member;
 
-        await interaction.deferReply({ephemeral: true}); // Defer the reply as image processing might take some time
+        await interaction.deferReply({ ephemeral: true });
         if (!member) {
             await interaction.followUp({ content: 'Member not found.', ephemeral: true });
             return;
         }
 
 
-        // check if the user is already verified
+        // Check if the user is already verified
         if (isUserVerified(member.user.id)) {
             await interaction.followUp({ content: 'You are already verified.', ephemeral: true });
             return;
         }
 
         const image = interaction.options.getAttachment('image');
-        
+
         if (!image || !image.url) {
             await interaction.followUp({ content: 'Please provide a valid image.', ephemeral: true });
             return;
@@ -91,13 +106,14 @@ client.on(Events.InteractionCreate, async interaction => {
         const allowedExtensions = ['jpeg', 'png', 'webp', 'gif'];
         const url = new URL(image.url);
         const fileExtension = url.pathname.split('.').pop().toLowerCase();
-        
+
         console.log(`File extension: ${fileExtension}`);
 
         if (!allowedExtensions.includes(fileExtension)) {
             await interaction.followUp({ content: 'Unsupported file format. Please upload a JPEG, PNG, WEBP, or GIF image.', ephemeral: true });
             return;
         }
+
 
 
         // Getting the Image
@@ -111,36 +127,38 @@ client.on(Events.InteractionCreate, async interaction => {
             const processedImage = await sharp(buffer)
                 .resize({ width: 1000 })
                 .toBuffer();
-                
+
 
             // Use Tesseract to extract text
             const { data: { text } } = await Tesseract.recognize(processedImage);
 
-
+            
             // Convert extracted text and channel name to lowercase for case-insensitive comparison
             const extractedTextLower = text.toLowerCase();
             const channelNameLower = config.channel_name.toLowerCase();
 
-            console.log(`Extracted text: ${text}`); 
-
+            console.log(`Extracted text: ${text}`);
 
             // Check if the extracted text contains the channel_name
             let containsChannelName = extractedTextLower.includes(channelNameLower);
 
 
             // If keywords are provided, also check for them
-            if (config.keywords) {
-                const keywordsArray = config.keywords.split(',').map(keyword => keyword.trim().toLowerCase());
+            if (keywords) {
+                const keywordsArray = keywords.split(',').map(keyword => keyword.trim().toLowerCase());
                 containsChannelName = containsChannelName || keywordsArray.some(keyword => extractedTextLower.includes(keyword));
             }
 
             if (containsChannelName) {
-                await member.roles.add(config.role_id);
+                if (role_id) {
+                    await member.roles.add(role_id);
+                }
                 await interaction.followUp({ content: `Thanks for subscribing to ${config.channel_name}`, ephemeral: true });
-                
+
+
 
                 // Save user data if save_data is true
-                if (config.save_data === 'true') {
+                if (save_data === 'true') {
                     const userData = {
                         username: member.user.username,
                         id: member.user.id,
@@ -155,10 +173,10 @@ client.on(Events.InteractionCreate, async interaction => {
                     fs.writeFileSync('subscriber.json', JSON.stringify(subscribers, null, 2));
                 }
             } else {
-                await interaction.followUp({ 
-                    content: `You haven't subscribed to ${config.channel_name} or if this is an error please send a cropped image like attached below!`, 
-                    files: ["https://i.ibb.co/rQdzcbT/image.png"], 
-                    ephemeral: true 
+                await interaction.followUp({
+                    content: `You haven't subscribed to ${config.channel_name} or if this is an error please send a cropped image like attached below!`,
+                    files: ["https://i.ibb.co/rQdzcbT/image.png"],
+                    ephemeral: true
                 });
             }
         } catch (error) {
