@@ -1,7 +1,7 @@
 module.exports = {
-    token: "", // Add your bot's token here (REQUIRED)
-    channel_name: "@devuuuu_xd", // Specify your youtube channel's name here (REQUIRED)
-    role_id:"", //if of role which you wanted to be given (OPTIONAL)
-    keywords: "", // Specify the keywords for analyzing the image (OPTIONAL)
-    save_data:"true" // do you want to save data in subscriber.json for yes say "true" for no say "false" (OPTIONAL)
+    token: "your-bot-token-here", // Add your bot's token here (REQUIRED)
+    channel_name: "@devuuuu_xd", // Specify your YouTube channel's name here (REQUIRED)
+    role_id: "", // ID of the role you want to assign (OPTIONAL)
+    keywords: "subscribe, follow, like", // Specify the keywords separated by commas (OPTIONAL)
+    save_data: "true" // Save data in subscriber.json (OPTIONAL)
 };
