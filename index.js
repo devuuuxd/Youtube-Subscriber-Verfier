@@ -87,7 +87,6 @@ client.on(Events.InteractionCreate, async interaction => {
             return;
         }
 
-
         // Check if the user is already verified
         if (isUserVerified(member.user.id)) {
             await interaction.followUp({ content: 'You are already verified.', ephemeral: true });
@@ -101,7 +100,6 @@ client.on(Events.InteractionCreate, async interaction => {
             return;
         }
 
-
         // Check the file extension
         const allowedExtensions = ['jpeg', 'png', 'webp', 'gif'];
         const url = new URL(image.url);
@@ -114,48 +112,41 @@ client.on(Events.InteractionCreate, async interaction => {
             return;
         }
 
-
-
         // Getting the Image
         try {
             const response = await fetch(image.url);
             const arrayBuffer = await response.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
 
-
             // Use sharp to preprocess the image
             const processedImage = await sharp(buffer)
                 .resize({ width: 1000 })
                 .toBuffer();
 
-
             // Use Tesseract to extract text
             const { data: { text } } = await Tesseract.recognize(processedImage);
 
-            
             // Convert extracted text and channel name to lowercase for case-insensitive comparison
             const extractedTextLower = text.toLowerCase();
             const channelNameLower = config.channel_name.toLowerCase();
 
             console.log(`Extracted text: ${text}`);
 
-            // Check if the extracted text contains the channel_name
+            // Initialize a flag for channel name match
             let containsChannelName = extractedTextLower.includes(channelNameLower);
 
-
-            // If keywords are provided, also check for them
-            if (keywords) {
-                const keywordsArray = keywords.split(',').map(keyword => keyword.trim().toLowerCase());
+            // Check if any of the keywords are in the extracted text
+            if (config.keywords) {
+                const keywordsArray = config.keywords.split(',').map(keyword => keyword.trim().toLowerCase());
                 containsChannelName = containsChannelName || keywordsArray.some(keyword => extractedTextLower.includes(keyword));
             }
 
+            // If a match is found
             if (containsChannelName) {
                 if (role_id) {
                     await member.roles.add(role_id);
                 }
                 await interaction.followUp({ content: `Thanks for subscribing to ${config.channel_name}`, ephemeral: true });
-
-
 
                 // Save user data if save_data is true
                 if (save_data === 'true') {
@@ -185,6 +176,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
 });
+
 
 client.login(config.token).catch(err => {
     console.error('Failed to login:', err);
